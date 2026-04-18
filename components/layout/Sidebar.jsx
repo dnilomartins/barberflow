@@ -1,26 +1,56 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const navLinks = [
+    { href: '/',              label: 'Dashboard'    },
+    { href: '/agendamentos',  label: 'Agendamentos' },
+    { href: '/servicos',      label: 'Serviços'     },
+    { href: '/barbeiros',     label: 'Barbeiros'    },
+]
 
 export default function Sidebar() {
+    const pathname = usePathname()
+
     return (
-        <aside className="w-64 min-h-screen bg-gray-900 text-white p-6">
-            <div className="mb-8">
-                <h2 className="text-xl font-semibold">BarberFlow</h2>
+        <aside className="hidden md:flex flex-col w-64 min-h-screen bg-gray-950 border-r border-gray-800">
+
+            {/* Logo */}
+            <div className="h-16 flex items-center px-6 border-b border-gray-800">
+        <span className="text-white font-semibold text-lg tracking-tight">
+          Barber<span className="text-blue-400">Flow</span>
+        </span>
             </div>
 
-            <nav className="flex flex-col gap-2">
-                <Link href="/" className="px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-                    Dashboard
-                </Link>
-                <Link href="/servicos" className="px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-                    Serviços
-                </Link>
-                <Link href="/barbeiros" className="px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-                    Barbeiros
-                </Link>
-                <Link href="/agendamentos" className="px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-                    Agendamentos
-                </Link>
+            {/* Navegação */}
+            <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
+                {navLinks.map((link) => {
+                    const isActive = pathname === link.href
+
+                    return (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={`
+                flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                ${isActive
+                                ? 'bg-blue-600 text-white'
+                                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                            }
+              `}
+                        >
+                            {link.label}
+                        </Link>
+                    )
+                })}
             </nav>
+
+            {/* Rodapé da sidebar */}
+            <div className="px-6 py-4 border-t border-gray-800">
+                <p className="text-xs text-gray-600">BarberFlow v0.1</p>
+            </div>
+
         </aside>
     )
 }
